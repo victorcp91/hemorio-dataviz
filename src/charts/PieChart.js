@@ -40,7 +40,9 @@ class PieChart {
       "#ff7f00",
       "#984ea3",
       "#e41a1c",
-      "#ffe135",
+      "#00e100",
+      "#e41aff",
+      "#ffe1ff",
     ]);
 
     const chartContainer = svg

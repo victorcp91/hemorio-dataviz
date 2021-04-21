@@ -1,11 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import PieChart from "../../charts/PieChart";
+import { csv, autoType } from "d3";
 
 import pieData from "../../data/pie.json";
 
 import style from "./index.module.css";
 
 let vis = null;
+
+function get_dtInfo(datestr){
+  return new Date((datestr+ '').slice(0, 4),(datestr+ '').slice(4, 6)-1,(datestr+ '').slice(6, 8))
+}
 
 export default function Pie() {
   const pieChartElement = useRef(null);
@@ -27,10 +32,16 @@ export default function Pie() {
     }
   }
 
-  function fetchData() {
-    Promise.resolve().then(() => {
-      setData(pieData);
-    });
+  async function fetchData() {
+    let data = await csv('data/blood_donors.csv', autoType)
+    let pieData2 = []
+    for (let blood of ["A_minus","A_plus","AB_minus", "AB_plus","B_minus", "B_plus" ,"O_minus", "O_plus" ]){
+      let sum = data.reduce(function (accumulator, currentValue) {
+          return accumulator + currentValue[blood]
+      }, 0)
+      pieData2.push({name: blood, number : sum})
+    }
+      setData(pieData2);
   }
 
   useEffect(fetchData, []);
