@@ -1,0 +1,14 @@
+.container{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.container rect {
+  fill: steelblue;
+}
+
+.container line{
+  stroke: #c0c0bb;
+}

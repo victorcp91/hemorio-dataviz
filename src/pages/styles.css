@@ -1,0 +1,10 @@
+.domain{
+  stroke: none;
+}
+
+.line-path{
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 4;
+  stroke-linejoin: round;
+}

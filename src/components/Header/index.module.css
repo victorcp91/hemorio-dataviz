@@ -1,0 +1,7 @@
+.container{
+  display: flex;
+}
+
+.title{
+  width: fit-content;
+}
