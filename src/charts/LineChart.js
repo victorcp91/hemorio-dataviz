@@ -52,7 +52,7 @@ class LineChart {
       .nice();
 
     const yScale = scaleLinear()
-      .domain(extent([].concat(...data), yValue))
+      .domain([0, d3.max(data, function(d) { return +d.value; })]).nice()
       .range([innerHeight, 0])
       .nice();
 
