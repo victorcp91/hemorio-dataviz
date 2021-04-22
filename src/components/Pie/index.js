@@ -2,15 +2,10 @@ import React, { useState, useRef, useEffect } from "react";
 import PieChart from "../../charts/PieChart";
 import { csv, autoType } from "d3";
 
-import pieData from "../../data/pie.json";
-
 import style from "./index.module.css";
 
 let vis = null;
 
-function get_dtInfo(datestr){
-  return new Date((datestr+ '').slice(0, 4),(datestr+ '').slice(4, 6)-1,(datestr+ '').slice(6, 8))
-}
 
 export default function Pie() {
   const pieChartElement = useRef(null);

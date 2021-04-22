@@ -52,7 +52,7 @@ class PieChart {
     const arcs = pie().value((d) => d[key])(data); // return arcs data
     console.log(arcs);
 
-    const arcConfig = arc().innerRadius(0).outerRadius(radius);
+    const arcConfig = arc().innerRadius(radius - 100).outerRadius(radius);
 
     const label = arc()
       .outerRadius(radius)

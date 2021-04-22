@@ -2,10 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import LineChart from "../../charts/LineChart";
 
 import temperatureData from "../../data/temperature.json";
-
+import { csv, autoType } from "d3";
 import style from "./index.module.css";
 
 let vis = null;
+
+
+function get_dtInfo(info){
+  let datestr = info.datestr
+  return new Date((datestr+ '').slice(0, 4),(datestr+ '').slice(4, 6)-1,(datestr+ '').slice(6, 8))
+}
 
 export default function Line() {
   const lineChartElement = useRef(null);
@@ -16,7 +22,7 @@ export default function Line() {
 
   function initVis() {
     if (data && data.length) {
-      const dataFields = ["timestamp", "temperature"];
+      const dataFields = ["date", "value"];
       const d3Props = {
         data,
         dataFields,
@@ -27,21 +33,10 @@ export default function Line() {
     }
   }
 
-  function fetchData() {
-    Promise.resolve().then(() => {
-      const formattedTemperatureData = temperatureData.map((td) => ({
-        temperature: parseFloat(td.temperature),
-        timestamp: new Date(td.timestamp),
-      }));
-
-      const anotherFormattedTemperatureData = formattedTemperatureData.map(
-        (td) => ({
-          temperature: td.temperature - 10,
-          timestamp: td.timestamp,
-        })
-      );
-      setData([formattedTemperatureData, anotherFormattedTemperatureData]);
-    });
+  async function fetchData() {
+    let data = await csv('data/blood_donors.csv', autoType)
+    data = data.map(x => ({date : get_dtInfo(x), value : x.total}))
+    setData([data]);
   }
 
   useEffect(fetchData, []);

@@ -10,6 +10,7 @@ import {
   curveBasis,
 } from "d3";
 
+
 class LineChart {
   containerEl;
   props;
