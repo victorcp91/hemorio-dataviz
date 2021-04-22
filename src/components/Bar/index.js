@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import BarChart from "../../charts/BarChart";
 
-import populationData from "../../data/populations";
+import { csv, autoType } from "d3";
 
 import style from "./index.module.css";
 
@@ -16,7 +16,7 @@ export default function Bar() {
 
   function initVis() {
     if (data && data.length) {
-      const dataFields = ["country", "population"];
+      const dataFields = ["type", "value"];
       const d3Props = {
         data,
         dataFields,
@@ -27,8 +27,16 @@ export default function Bar() {
     }
   }
 
-  function fetchData() {
-    Promise.resolve().then(() => setData(populationData));
+  async function fetchData() {
+    let data = await csv('data/blood_donors.csv', autoType)
+    let barData = []
+    for (let blood of ["A_minus","A_plus","AB_minus", "AB_plus","B_minus", "B_plus" ,"O_minus", "O_plus" ]){
+      let sum = data.reduce(function (accumulator, currentValue) {
+          return accumulator + currentValue[blood]
+      }, 0)
+      barData.push({type: blood, value : sum})
+    }
+      setData(barData);
   }
 
   useEffect(fetchData, []);
