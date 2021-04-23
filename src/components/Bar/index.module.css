@@ -6,7 +6,7 @@
   align-items: center;
 }
 .container rect {
-  fill: steelblue;
+  fill: firebrick;
 }
 
 .container line{

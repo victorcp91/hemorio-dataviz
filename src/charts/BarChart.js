@@ -37,12 +37,12 @@ class BarChart {
       },
     } = this;
 
-    const margin = { top: 20, right: 20, bottom: 20, left: 70 };
+    const margin = { top: 40, right: 20, bottom: 20, left: 70 };
     const innerWidth = width - margin.left - margin.right; // chart area without margins;
     const innerHeight = height - margin.top - margin.bottom; // chart area without margins;
 
     const xValue = (d) => d[key]; //JSON key
-    const yValue = (d) => d[value]; // JSON value
+    const yValue = (d) => parseInt(d[value]); // JSON value
 
     const xScale = scaleBand()
       .domain(data.map(xValue))
@@ -70,7 +70,7 @@ class BarChart {
     );
     chartContainer
       .append("g")
-      .call(yAxis.tickFormat(format("s")).tickSize(-innerWidth));
+      .call(yAxis.tickFormat(format("")).tickSize(-innerWidth));
     // formating examples: http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e
 
     chartContainer

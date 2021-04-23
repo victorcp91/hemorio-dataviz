@@ -30,10 +30,15 @@ export default function Pie() {
   async function fetchData() {
     let data = await csv('data/blood_donors.csv', autoType)
     let pieData2 = []
-    for (let blood of ["A_minus","A_plus","AB_minus", "AB_plus","B_minus", "B_plus" ,"O_minus", "O_plus" ]){
+    //"A_plus","AB_minus", "AB_plus","B_minus", "B_plus" ,"O_minus", "O_plus", 
+    for (let blood of ["A_minus","total" ]){
       let sum = data.reduce(function (accumulator, currentValue) {
           return accumulator + currentValue[blood]
       }, 0)
+      if (blood == "total"){
+        sum -= pieData2[0].number
+        blood = "outros"
+      }
       pieData2.push({name: blood, number : sum})
     }
       setData(pieData2);

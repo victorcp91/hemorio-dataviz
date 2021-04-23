@@ -34,16 +34,10 @@ class PieChart {
     const xValue = (d) => d[key]; //JSON key - number
     const yValue = (d) => d[value]; // JSON value - name
 
-    var color = scaleOrdinal([
-      "#4daf4a",
-      "#377eb8",
-      "#ff7f00",
-      "#984ea3",
-      "#e41a1c",
-      "#00e100",
-      "#e41aff",
-      "#ffe1ff",
-    ]);
+    var color = [
+      "firebrick",
+      "lightgray"
+    ];
 
     const chartContainer = svg
       .append("g")
@@ -54,8 +48,9 @@ class PieChart {
 
     const arcConfig = arc().innerRadius(radius - 100).outerRadius(radius);
 
+
     const label = arc()
-      .outerRadius(radius)
+      .outerRadius(radius + 150)
       .innerRadius(radius - 100);
 
     const pieContainer = chartContainer
@@ -67,11 +62,13 @@ class PieChart {
     pieContainer
       .append("path")
       .attr("d", arcConfig)
-      .attr("fill", (d, i) => color(i));
+      .attr("fill", (d, i) => color[i]);
     pieContainer
       .append("text")
-      .text((d) => d.data.name)
-      .attr("transform", (d) => `translate(${label.centroid(d)})`);
+      .text((d) => `${d.data.name}`)
+      .attr("transform", (d) => `translate(${label.centroid(d)})`)
+      .attr("text-anchor", "middle")
+      .attr("fill", "black")
   };
 
   resize = (width, height) => {
