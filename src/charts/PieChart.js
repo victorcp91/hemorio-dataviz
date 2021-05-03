@@ -29,15 +29,15 @@ class PieChart {
     } = this;
 
     const margin = { top: 20, right: 20, bottom: 20, left: 70 };
-    const radius = 200;
+    const radius = width/2;
 
     const xValue = (d) => d[key]; //JSON key - number
     const yValue = (d) => d[value]; // JSON value - name
 
-    var color = [
+    var color = scaleOrdinal([
       "firebrick",
-      "lightgray"
-    ];
+      "lightgrey",]
+    );
 
     const chartContainer = svg
       .append("g")
@@ -46,12 +46,7 @@ class PieChart {
     const arcs = pie().value((d) => d[key])(data); // return arcs data
     console.log(arcs);
 
-    const arcConfig = arc().innerRadius(radius - 100).outerRadius(radius);
-
-
-    const label = arc()
-      .outerRadius(radius + 150)
-      .innerRadius(radius - 100);
+    const arcConfig = arc().innerRadius(radius - 20).outerRadius(radius);
 
     const pieContainer = chartContainer
       .selectAll("arc")
@@ -62,11 +57,11 @@ class PieChart {
     pieContainer
       .append("path")
       .attr("d", arcConfig)
-      .attr("fill", (d, i) => color[i]);
+      .attr("fill", (d, i) => color(i));
     pieContainer
       .append("text")
       .text((d) => `${d.data.name}`)
-      .attr("transform", (d) => `translate(${label.centroid(d)})`)
+      // .attr("transform", (d) => `translate(${label.centroid(d)})`)
       .attr("text-anchor", "middle")
       .attr("fill", "black")
   };

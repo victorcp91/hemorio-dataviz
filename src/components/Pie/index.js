@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import PieChart from "../../charts/PieChart";
 import { csv, autoType } from "d3";
 
@@ -7,12 +7,11 @@ import style from "./index.module.css";
 let vis = null;
 
 
-export default function Pie() {
+export default function Pie({data}) {
   const pieChartElement = useRef(null);
 
-  const [data, setData] = useState(null);
-  const [width, setWidth] = useState(1000);
-  const [height, setHeight] = useState(600);
+  const [width, setWidth] = useState(200);
+  const [height, setHeight] = useState(200);
 
   function initVis() {
     if (data && data.length) {
@@ -27,35 +26,20 @@ export default function Pie() {
     }
   }
 
-  async function fetchData() {
-    let data = await csv('data/blood_donors.csv', autoType)
-    let pieData2 = []
-    //"A_plus","AB_minus", "AB_plus","B_minus", "B_plus" ,"O_minus", "O_plus", 
-    for (let blood of ["A_minus","total" ]){
-      let sum = data.reduce(function (accumulator, currentValue) {
-          return accumulator + currentValue[blood]
-      }, 0)
-      if (blood == "total"){
-        sum -= pieData2[0].number
-        blood = "outros"
-      }
-      pieData2.push({name: blood, number : sum})
-    }
-      setData(pieData2);
-  }
-
-  useEffect(fetchData, []);
-
   useEffect(() => {
     if (data) {
       initVis();
     }
   }, [data]);
+  
+  const percent = useMemo(()=>{
+    return (data[0].number / (data[0].number + data[1].number)) * 100
+  }, [data])
 
   return (
-    <section id="pie" className={style.container}>
-      <h2>Pie Chart</h2>
-      <div id="vis-container" ref={pieChartElement}></div>
-    </section>
+      <div className={style.container}>
+        <div id="vis-container" ref={pieChartElement}></div>
+        <div className={style.percent}> {percent.toFixed(2)} %</div>
+      </div>
   );
 }

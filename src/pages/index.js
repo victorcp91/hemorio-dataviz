@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import Home from "../components/Home";
 import Bar from "../components/Bar";
 import Line from "../components/Line";
-import Pie from "../components/Pie";
+import BloodTypes from "../components/BloodTypes";
 
 const Main = () => (
   <div className={styles.container}>
@@ -18,7 +18,7 @@ const Main = () => (
     <Home />
     <Bar />
     <Line />
-    <Pie />
+    <BloodTypes />
   </div>
 );
 
