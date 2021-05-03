@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import BarChart from "../../charts/BarChart";
-
+import { map_real_name } from "../../lib/map_real_name"
 import { csv, autoType } from "d3";
 
 import style from "./index.module.css";
@@ -11,7 +11,15 @@ export default function Bar() {
   const barChartElement = useRef(null);
 
   const [data, setData] = useState(null);
-  const [width, setWidth] = useState(800);
+  const [width, setWidth] = useState(() =>{
+    if (typeof window !== 'undefined') {
+      if(window.innerWidth > 1200){
+          return 1200
+      }
+      return window.innerWidth - 20
+    }
+    return null
+  });
   const [height, setHeight] = useState(600);
 
   function initVis() {
@@ -34,7 +42,7 @@ export default function Bar() {
       let sum = data.reduce(function (accumulator, currentValue) {
           return accumulator + currentValue[blood]
       }, 0)
-      barData.push({type: blood, value : sum})
+      barData.push({type: map_real_name(blood), value : sum})
     }
       setData(barData);
   }

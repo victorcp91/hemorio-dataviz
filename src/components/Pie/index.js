@@ -10,8 +10,19 @@ let vis = null;
 export default function Pie({data}) {
   const pieChartElement = useRef(null);
 
-  const [width, setWidth] = useState(200);
-  const [height, setHeight] = useState(200);
+  const [width, setWidth] = useState(() => {
+    if (window.innerWidth < 600){
+      return 100
+    } 
+    return 200
+  }
+  );
+  const [height, setHeight] = useState(() => {
+    if (window.innerWidth < 600){
+      return 100
+    } 
+    return 200
+  });
 
   function initVis() {
     if (data && data.length) {

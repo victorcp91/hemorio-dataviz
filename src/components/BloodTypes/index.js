@@ -1,22 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { csv, autoType } from "d3";
-
+import {map_real_name} from "../../lib/map_real_name";
 import style from "./index.module.css";
 import Pie from "../Pie"
 
 export default function BloodTypes() {
   const [data, setData] = useState(null);
   const types = ["A_minus", "A_plus","AB_minus", "AB_plus","B_minus", "B_plus" ,"O_minus", "O_plus"]
-
-  function map_real_name(name){
-    if(name.includes("_minus")){
-      return name.replace("_minus", "-")
-    }
-    if(name.includes("_plus")){
-      return name.replace("_plus", "+")
-    }
-    return name
-  }
 
   async function fetchData() {
     let csv_data = await csv('data/blood_donors.csv', autoType)
@@ -41,7 +31,7 @@ export default function BloodTypes() {
   useEffect(fetchData, []);
 
   return (
-    <section id="blood-tye" className={style.container}>
+    <section id="blood-type" className={style.container}>
       <h2>Pie Chart</h2>
       <div  className={style.pies}>
         {data && data.map((d) => <Pie data={d} key={d[0].name}/>) }
