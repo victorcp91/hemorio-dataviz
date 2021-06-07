@@ -88,6 +88,10 @@ class BarChart {
     const { svg } = this;
     svg.attr("width", width).attr("height", height);
   };
+
+  destroy = () => {
+    this.svg.remove();
+  }
 }
 
 export default BarChart;

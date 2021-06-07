@@ -7,6 +7,10 @@ body{
   padding: 0;
 }
 
+button{
+  cursor: pointer;
+}
+
 .domain{
   stroke: none;
 }
@@ -14,6 +18,80 @@ body{
 .line-path{
   fill: none;
   stroke: firebrick;
-  stroke-width: 4;
+  stroke-width: 2;
   stroke-linejoin: round;
+}
+
+.filters .A_minus{
+  background-color: rgb(178,34,34,1);
+}
+.filters .A_plus{
+  background-color: rgb(112, 5, 14);
+}
+.filters .AB_minus{
+  background-color: rgb(233, 43, 59);
+
+}
+.filters .AB_plus{
+  background-color: rgb(51, 1, 5);
+}
+.filters .B_minus{
+  background-color: rgb(179, 52, 63);
+}
+.filters .B_plus{
+  background-color: rgb(70, 26, 30);
+}
+.filters .O_minus{
+  background-color: rgb(24, 9, 10);
+}
+.filters .O_plus{
+  background-color: rgb(236, 127, 134);
+}
+
+.multilineChart .line-path{
+  stroke-dashoffset: 126000;
+  stroke-dasharray: 126000;
+}
+
+.multilineChart.A_minus .A_minus{
+  stroke: rgb(178,34,34,1);
+  animation: dashDraw 2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+.multilineChart.A_plus .A_plus{
+  stroke: rgb(112, 5, 14);
+  animation: dashDraw 2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+.multilineChart.AB_minus .AB_minus{
+  stroke: rgb(233, 43, 59);
+  animation: dashDraw 2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+.multilineChart.AB_plus .AB_plus{
+  stroke: rgb(51, 1, 5);
+  animation: dashDraw 2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+.multilineChart.B_minus .B_minus{
+  stroke: rgb(179, 52, 63);
+  animation: dashDraw 2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+.multilineChart.B_plus .B_plus{
+  stroke: rgb(70, 26, 30);
+  animation: dashDraw 2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+.multilineChart.O_minus .O_minus{
+  stroke: rgb(24, 9, 10);
+  animation: dashDraw 2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+.multilineChart.O_plus .O_plus{
+  stroke: rgb(236, 127, 134);
+  animation: dashDraw 2s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+
+@keyframes dashDraw {
+  from {
+    stroke-dashoffset: 126000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }

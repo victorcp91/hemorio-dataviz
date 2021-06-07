@@ -44,7 +44,6 @@ class PieChart {
       .attr("transform", `translate(${width / 2}, ${height / 2})`); // Chart margins
 
     const arcs = pie().value((d) => d[key])(data); // return arcs data
-    console.log(arcs);
 
     const arcConfig = arc().innerRadius(radius - 20).outerRadius(radius);
 

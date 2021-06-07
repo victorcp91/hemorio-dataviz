@@ -1,0 +1,30 @@
+.container{
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.lineColor{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid darkgray;
+}
+.filters{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  max-width: 1000px;
+  margin: 0 auto;
+
+}
+
+.filters button{
+  border: none;
+  opacity: 0.5;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.filters .active{
+  opacity: 1;
+}

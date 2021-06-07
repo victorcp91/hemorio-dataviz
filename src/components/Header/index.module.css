@@ -1,7 +1,45 @@
 .container{
   display: flex;
+  align-items: center;
+  margin: 0 20px;
+}
+.container input{
+  margin: 10px 0;
 }
 
 .title{
   width: fit-content;
+}
+
+.sections{
+  padding: 0;
+  margin: 0 20px;
+  list-style: none;
+  display: flex;
+}
+
+.sections li{
+  margin-right: 20px;
+  
+}
+
+.bloodBank{
+  margin: 0 20px;
+}
+.bloodBank select{
+  margin-bottom: 20px;
+}
+
+.filters{
+  padding: 0;
+  padding: 30px 20px 0 20px;
+  list-style: none;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.filters li{
+  display: flex;
+  flex-direction: column;
 }
