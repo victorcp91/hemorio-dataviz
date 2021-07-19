@@ -101,6 +101,14 @@ button{
   }
 }
 
+#pie-vis-container{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  border-radius: 8px;
+  overflow: hidden;
+}
 
 #vis-container{
   width: 100%;

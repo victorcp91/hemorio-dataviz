@@ -4,7 +4,8 @@ class MultipleLineChart{
   constructor(containerEl, props) {
     this.containerEl = containerEl;
     this.props = props;
-    const { width, height } = props;
+    const { height } = props;
+    const width = select(containerEl).node().getBoundingClientRect().width;
     this.svg = select(containerEl)
         .append("svg")
         .style("background-color", "white")

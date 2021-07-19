@@ -33,7 +33,7 @@ export default function Pie({data}) {
 
   return (
       <div className={style.container}>
-        <div id="vis-container" ref={pieChartElement}></div>
+        <div id="pie-vis-container" ref={pieChartElement}></div>
         <div className={style.percent}> {percent.toFixed(2)} %</div>
       </div>
   );
