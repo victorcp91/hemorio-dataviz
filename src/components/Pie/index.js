@@ -10,28 +10,12 @@ let vis = null;
 export default function Pie({data}) {
   const pieChartElement = useRef(null);
 
-  const [width, setWidth] = useState(() => {
-    if (window.innerWidth < 600){
-      return 100
-    } 
-    return 200
-  }
-  );
-  const [height, setHeight] = useState(() => {
-    if (window.innerWidth < 600){
-      return 100
-    } 
-    return 200
-  });
-
   function initVis() {
     if (data && data.length) {
       const dataFields = ["number", "name"];
       const d3Props = {
         data,
         dataFields,
-        width,
-        height,
       };
       vis = new PieChart(pieChartElement.current, d3Props);
     }

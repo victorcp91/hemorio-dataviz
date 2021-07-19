@@ -15,10 +15,9 @@ const Main = () => (
   <Provider store={Store.getStore()}>
     <div className={styles.container}>
       <Head>
-        <title>HEMORIO</title>
+        <title>BLOOD BANK PREDICTIONS</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Home />
       <Header />
       <Bar />
       <Line />

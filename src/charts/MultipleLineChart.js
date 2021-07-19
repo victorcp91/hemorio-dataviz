@@ -9,19 +9,29 @@ class MultipleLineChart{
         .append("svg")
         .style("background-color", "white")
         .attr("width", width)
-        .attr("height", height);
+        .attr("height", height)
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("perserveAspectRatio","xMinYMid");
     this.updateDatapoints();
   }
 
   updateDatapoints = () => {
     const {
       svg,
+      containerEl,
       props: {
           data,
           width,
           height,
       },
     } = this;
+
+    const  aspect = width / height;
+    select(window).on('resize', function(){
+      const targetWidth = select(containerEl).node().getBoundingClientRect().width;
+      svg.attr("width", targetWidth);
+      svg.attr("height", targetWidth / aspect);
+    });
 
     const margin = { top: 20, right: 20, bottom: 40, left: 70 };
     const innerWidth = width - margin.left - margin.right; // chart area without margins;

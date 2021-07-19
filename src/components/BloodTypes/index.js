@@ -32,7 +32,6 @@ export default function BloodTypes() {
 
   return (
     <section id="blood-type" className={style.container}>
-      <h2>Pie Chart</h2>
       <div  className={style.pies}>
         {data && data.map((d) => <Pie data={d} key={d[0].name}/>) }
       </div>

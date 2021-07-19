@@ -8,26 +8,38 @@ class PieChart {
   constructor(containerEl, props) {
     this.containerEl = containerEl;
     this.props = props;
-    const { width, height } = props;
+    const width = select(containerEl).node().getBoundingClientRect().width;
+    const height = width;
+
     this.svg = select(containerEl)
       .append("svg")
       .style("background-color", "white")
       .attr("width", width)
-      .attr("height", height);
+      .attr("height", height)
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("perserveAspectRatio","xMinYMid");
     this.updateDatapoints();
   }
 
   updateDatapoints = () => {
     const {
       svg,
+      containerEl,
       props: {
         data,
         dataFields: [key, value],
-        width,
-        height,
       },
     } = this;
 
+    const  aspect = width / height;
+    window.addEventListener('resize', function(){
+        const targetWidth = select(containerEl).node().getBoundingClientRect().width;
+        svg.attr("width", targetWidth);
+        svg.attr("height", targetWidth / aspect);
+    });
+
+    const width = select(containerEl).node().getBoundingClientRect().width;
+    const height = width;
     const margin = { top: 20, right: 20, bottom: 20, left: 70 };
     const radius = width/2;
 
@@ -45,7 +57,7 @@ class PieChart {
 
     const arcs = pie().value((d) => d[key])(data); // return arcs data
 
-    const arcConfig = arc().innerRadius(radius - 20).outerRadius(radius);
+    const arcConfig = arc().innerRadius(radius - 40).outerRadius(radius);
 
     const pieContainer = chartContainer
       .selectAll("arc")

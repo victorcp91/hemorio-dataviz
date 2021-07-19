@@ -94,7 +94,6 @@ export default function Bar() {
 
   return (
     <section id="bar" className={style.container}>
-      <h2>Bar Chart</h2>
       <div id="vis-container" ref={barChartElement}></div>
     </section>
   );

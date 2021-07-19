@@ -107,25 +107,24 @@ export default function MultipleLine() {
 
   return (
     <section id="multiline" className={style.container}>
-      <h2>MultipleLine</h2>
       <div id="vis-container" ref={multipleLineChartElement} className={`multilineChart ${activeFilters}`}></div>
       <div className={`filters ${style.filters}`}>
         {filters.map(filter => (
           <button
             className={bloodTypeFilters[filter] ? `${style.active} active` : ''}
             onClick={() => toogleBloodType(filter)}>
-            <div className={`${style.lineColor} ${bloodTypeFilters[filter] ? filter : ''}`} />  {map_real_name(filter)}
+            <div className={`${style.lineColor} ${bloodTypeFilters[filter] ? filter : ''}`} />  <span className={style.name}>{map_real_name(filter)}</span>
           </button>
         ))}
       </div>
-      <div>
+      {/* <div>
         <button type="button">Show Model A</button>
         <button type="button">Show Model B</button>
       </div>
       <div>
         <button type="button">Download all data</button>
         <button type="button">Download current data</button>
-      </div>
+      </div> */}
     </section>
     )
 }

@@ -22,13 +22,17 @@ class BarChart {
       .append("svg")
       .style("background-color", "white")
       .attr("width", width)
-      .attr("height", height);
+      .attr("height", height)
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("perserveAspectRatio","xMinYMid");
+
     this.updateDatapoints();
   }
 
   updateDatapoints = () => {
     const {
       svg,
+      containerEl,
       props: {
         data,
         dataFields: [key, value],
@@ -37,6 +41,13 @@ class BarChart {
       },
     } = this;
 
+    const  aspect = width / height;
+    window.addEventListener('resize', function(){
+      const targetWidth = select(containerEl).node().getBoundingClientRect().width;
+      svg.attr("width", targetWidth);
+      svg.attr("height", targetWidth / aspect);
+    });
+    
     const margin = { top: 40, right: 20, bottom: 20, left: 70 };
     const innerWidth = width - margin.left - margin.right; // chart area without margins;
     const innerHeight = height - margin.top - margin.bottom; // chart area without margins;

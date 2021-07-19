@@ -55,7 +55,6 @@ export default function Line() {
 
     return (
         <section id="line" className={style.container}>
-            <h2>Line</h2>
             <div id="vis-container" ref={lineChartElement}></div>
         </section>
         )
