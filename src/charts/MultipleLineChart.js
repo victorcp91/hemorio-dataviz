@@ -74,8 +74,10 @@ class MultipleLineChart{
       .join('path')
       .attr("class", (d) => `line-path ${d.id}`)
       .attr('d', (d) => chartLine(d.values));
-  
   } 
+  destroy = () => {
+    this.svg.remove();
+  }
 }
 
 export default MultipleLineChart;

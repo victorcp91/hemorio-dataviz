@@ -2,20 +2,19 @@ import React, { useState, useRef, useMemo, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import BarChart from "../../charts/BarChart";
 import { map_real_name } from "../../lib/map_real_name"
-import { csv, autoType } from "d3";
 import {compareAsc, parseISO } from 'date-fns';
 
 import style from "./index.module.css";
 
 let vis = null;
 
-export default function Bar() {
+export default function Bar({type}) {
 
   const {initialTimeWindow, finalTimeWindow} = useSelector(state => state.filters);
+  const dataFile = type === 'history' ? useSelector(state => state.dataFile) : useSelector(state => state.forecastDataFile);
 
   const barChartElement = useRef(null);
 
-  const [data, setData] = useState(null);
   const [width, setWidth] = useState(() =>{
     if (typeof window !== 'undefined') {
       if(window.innerWidth > 1200){
@@ -28,7 +27,7 @@ export default function Bar() {
   const [height, setHeight] = useState(600);
 
   function initVis() {
-    if (data && data.length) {
+    if (dataFile && dataFile.length) {
       const dataFields = ["type", "value"];
       const d3Props = {
         data: barData,
@@ -43,21 +42,14 @@ export default function Bar() {
     }
   }
 
-  async function fetchData() {
-    let csvContent = await csv('data/blood_donors.csv', autoType)
-    setData(csvContent);
-  }
-
-  useEffect(fetchData, []);
-
 
   function get_dtInfo(datestr){
     return new Date((datestr+ '').slice(0, 4),(datestr+ '').slice(4, 6)-1,(datestr+ '').slice(6, 8))
   }
 
   const filteredData = useMemo(() => {
-    if(!data) return null;
-    let convertedDateData = data.map(item => ({...item, date: get_dtInfo(item.datestr)}));
+    if(!dataFile) return null;
+    let convertedDateData = dataFile.map(item => ({...item, date: get_dtInfo(item.datestr)}));
 
     if(initialTimeWindow){
       convertedDateData = convertedDateData.filter(item => {
@@ -69,7 +61,7 @@ export default function Bar() {
     }   
     return convertedDateData;
    
-  }, [data, initialTimeWindow, finalTimeWindow]);
+  }, [dataFile, initialTimeWindow, finalTimeWindow]);
 
 
   const barData = useMemo(() => {
@@ -91,6 +83,10 @@ export default function Bar() {
       initVis();
     }
   }, [barData]);
+
+  if(!dataFile.length){
+    return null;
+  }
 
   return (
     <section id="bar" className={style.container}>

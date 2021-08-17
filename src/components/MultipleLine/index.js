@@ -1,15 +1,17 @@
-import React, { useState, useRef, useEffect, useMemo, useCallback } from "react";
-import { csv, autoType } from "d3";
+import React, { useState, useRef, useEffect, useMemo } from "react";
+import { useSelector } from 'react-redux';
 import MultipleLineChart from "../../charts/MultipleLineChart";
 
 import { map_real_name } from '../../lib/map_real_name';
 
 import style from "./index.module.css";
 
-let vis = null;
-
-export default function MultipleLine() {
+export default function MultipleLine({type}) {
   const multipleLineChartElement = useRef(null);
+  const vis = useRef(null);
+
+  const dataFile = type === 'history' ? useSelector(state => state.dataFile) : useSelector(state => state.forecastDataFile);
+  
   const [data, setData] = useState(null);
   const [width, setWidth] = useState(() =>{
     if (typeof window !== 'undefined') {
@@ -40,7 +42,10 @@ export default function MultipleLine() {
         width,
         height,
       };
-      vis = new MultipleLineChart(multipleLineChartElement.current, d3Props);
+      if(vis.current){
+        vis.current.destroy();
+      }
+      vis.current = new MultipleLineChart(multipleLineChartElement.current, d3Props);
     }
   }
 
@@ -49,31 +54,32 @@ export default function MultipleLine() {
   }
 
   async function fetchData() {
-    let data = await csv('data/blood_donors_complete.csv', autoType);
-    data = data.map(({datestr, total, A_minus,A_plus,AB_minus,AB_plus,B_minus,B_plus,O_minus,O_plus}) => ({
-      date: get_dtInfo(datestr),
-      value: total,
-      A_minus : A_minus,
-      A_plus : A_plus,
-      AB_minus : AB_minus,
-      AB_plus : AB_plus,
-      B_minus : B_minus,
-      B_plus : B_plus,
-      O_minus : O_minus,
-      O_plus : O_plus,
-    }));
-
-    const types = ['A_minus','A_plus','AB_minus','AB_plus','B_minus','B_plus','O_minus','O_plus'];
-
-    const series = types.map((type) => ({
-      id: type, 
-      values: data.map((d) => ({date: d.date, value: d[type]}))
-    }));
-
-    setData(series);
+    if(dataFile.length){
+      const currentData = dataFile.map(({datestr, total, A_minus,A_plus,AB_minus,AB_plus,B_minus,B_plus,O_minus,O_plus}) => ({
+        date: get_dtInfo(datestr),
+        value: total,
+        A_minus : A_minus,
+        A_plus : A_plus,
+        AB_minus : AB_minus,
+        AB_plus : AB_plus,
+        B_minus : B_minus,
+        B_plus : B_plus,
+        O_minus : O_minus,
+        O_plus : O_plus,
+      }));
+  
+      const types = ['A_minus','A_plus','AB_minus','AB_plus','B_minus','B_plus','O_minus','O_plus'];
+  
+      const series = types.map((type) => ({
+        id: type, 
+        values: currentData.map((d) => ({date: d.date, value: d[type]}))
+      }));
+  
+      setData(series);
+    }
   }
 
-  useEffect(fetchData, []);
+  useEffect(fetchData, [dataFile]);
 
   useEffect(() => {
     if (data && width) {
@@ -105,6 +111,10 @@ export default function MultipleLine() {
     setBloodTypeFilters(updatedFilters);
   };
 
+  if(!dataFile || !dataFile.length){
+    return null;
+  }
+
   return (
     <section id="multiline" className={style.container}>
       <div id="vis-container" ref={multipleLineChartElement} className={`multilineChart ${activeFilters}`}></div>
@@ -117,14 +127,6 @@ export default function MultipleLine() {
           </button>
         ))}
       </div>
-      {/* <div>
-        <button type="button">Show Model A</button>
-        <button type="button">Show Model B</button>
-      </div>
-      <div>
-        <button type="button">Download all data</button>
-        <button type="button">Download current data</button>
-      </div> */}
     </section>
     )
 }

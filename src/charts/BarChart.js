@@ -1,6 +1,5 @@
 import {
   select,
-  csv,
   scaleLinear,
   scaleBand,
   max,

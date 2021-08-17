@@ -1,13 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import { csv, autoType } from "d3";
+import { useSelector } from 'react-redux';
 import LineChart from "../../charts/LineChart";
 
 import style from "./index.module.css";
 
-let vis = null;
-
-export default function Line() {
+export default function Line({type}) {
   const lineChartElement = useRef(null);
+  const vis = useRef(null);
+  
+  const dataFile = type === 'history' ? useSelector(state => state.dataFile) : useSelector(state => state.forecastDataFile);
+
   const [data, setData] = useState(null);
   const [width, setWidth] = useState(() =>{
     if (typeof window !== 'undefined') {
@@ -29,7 +32,10 @@ export default function Line() {
         width,
         height,
       };
-      vis = new LineChart(lineChartElement.current, d3Props);
+      if(vis.current){
+        vis.current.destroy();
+      }
+      vis.current = new LineChart(lineChartElement.current, d3Props);
     }
   }
 
@@ -39,19 +45,21 @@ export default function Line() {
     }
     
     async function fetchData() {
-        let data = await csv('data/blood_donors.csv', autoType)
-        data = data.map(x => ({date : get_dtInfo(x), value : x.total}))
-        setData([data]);
+        const formattedData = dataFile.map(x => ({date : get_dtInfo(x), value : x.total}))
+        setData([formattedData]);
     }
 
-    useEffect(fetchData, []);
+    useEffect(fetchData, [dataFile]);
 
     useEffect(() => {
-        if (data && width) {
+        if (dataFile.length && width) {
           initVis();
         }
       }, [data, width]);
     
+    if(!dataFile || !dataFile.length){
+      return  null;
+    }
 
     return (
         <section id="line" className={style.container}>

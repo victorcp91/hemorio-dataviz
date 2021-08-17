@@ -93,6 +93,9 @@ class LineChart {
       });
 
     }
+    destroy = () => {
+        this.svg.remove();
+    }
 }
 
 export default LineChart;

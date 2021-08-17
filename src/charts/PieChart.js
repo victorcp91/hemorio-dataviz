@@ -13,6 +13,7 @@ class PieChart {
 
     this.svg = select(containerEl)
       .append("svg")
+      .attr("id",props.data[0].name)
       .style("background-color", "white")
       .attr("width", width)
       .attr("height", height)
@@ -40,11 +41,7 @@ class PieChart {
 
     const width = select(containerEl).node().getBoundingClientRect().width;
     const height = width;
-    const margin = { top: 20, right: 20, bottom: 20, left: 70 };
     const radius = width/2;
-
-    const xValue = (d) => d[key]; //JSON key - number
-    const yValue = (d) => d[value]; // JSON value - name
 
     var color = scaleOrdinal([
       "firebrick",
@@ -67,10 +64,12 @@ class PieChart {
       .attr("class", "pie-piece");
     pieContainer
       .append("path")
+      .attr("id", "arcConfig")
       .attr("d", arcConfig)
       .attr("fill", (d, i) => color(i));
     pieContainer
       .append("text")
+      .attr("id", "text")
       .text((d) => `${d.data.name}`)
       // .attr("transform", (d) => `translate(${label.centroid(d)})`)
       .attr("text-anchor", "middle")
@@ -81,6 +80,10 @@ class PieChart {
     const { svg } = this;
     svg.attr("width", width).attr("height", height);
   };
+
+  destroy = () => {
+    this.svg.remove();
+  }
 }
 
 export default PieChart;
