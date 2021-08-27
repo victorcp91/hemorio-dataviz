@@ -13,7 +13,6 @@ export default function HistoryTimeWindow() {
   const dispatch = useDispatch();
   const {minForecastDate,maxForecastDate, forecastInitialTimeWindow, forecastFinalTimeWindow, forecastModel} = useSelector(state => state.filters);
   const { bank, model1File, model2File } = useSelector(state => state.dataFile);
-  console.log('here', model2File);
 
   function get_dtInfo(datestr){
     return new Date((datestr+ '').slice(0, 4),(datestr+ '').slice(4, 6)-1,(datestr+ '').slice(6, 8))

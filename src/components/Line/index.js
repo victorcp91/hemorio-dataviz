@@ -13,16 +13,13 @@ export default function Line({type}) {
 
   const dataFile = useMemo(() => {
     if(file && type === 'history'){
-      console.log('history');
       return file;
     }
     if(model1File && forecastModel === "1"){
-      console.log('model1');
 
       return model1File;
     } 
     if(model2File && forecastModel === "2"){
-      console.log('model2');
 
       return model2File;
     }
