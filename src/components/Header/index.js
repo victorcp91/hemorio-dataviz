@@ -54,6 +54,7 @@ export default function Header() {
       }
       if(bank.forecast_files[1]){
         let model2CsvContent = await csv(bank.forecast_files[1].file_url, autoType);
+        console.log('content', model2CsvContent);
         dispatch(setForecastModel2File(model2CsvContent));
       }
     }

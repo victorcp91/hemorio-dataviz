@@ -13,7 +13,7 @@ const reducer = (state = initialState, action) => {
       return {...state, bank: action.bank};
     case '@dataFile/SETFORECASTMODEL1FILE':
       return {...state, model1File: action.model1File };
-    case '@dataFile/SETFORECASTMODEL1FILE':
+    case '@dataFile/SETFORECASTMODEL2FILE':
       return {...state, model2File: action.model2File }
     default: 
       return state;
