@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSelector } from 'react-redux';
 import {map_real_name} from "../../lib/map_real_name";
 import style from "./index.module.css";
@@ -9,8 +9,22 @@ export default function BloodTypes({type}) {
   const [data, setData] = useState(null);
 
   const types = ["A_minus", "A_plus","AB_minus", "AB_plus","B_minus", "B_plus" ,"O_minus", "O_plus"]
+  
+  const { forecastModel } = useSelector(state => state.filters);
+  const {file, model1File, model2File} = useSelector(state => state.dataFile);
 
-  const dataFile = type === 'history' ? useSelector(state => state.dataFile) : useSelector(state => state.forecastDataFile);
+  const dataFile = useMemo(() => {
+    if(file && type === 'history'){
+      return file;
+    }
+    if(model1File && forecastModel === 1){
+      return model1File;
+    } 
+    if(model2File && forecastModel === 2){
+      return model2File;
+    }
+    return [];
+  }, [forecastModel, type, file, model1File, model2File]);
 
   async function fetchData() {
     

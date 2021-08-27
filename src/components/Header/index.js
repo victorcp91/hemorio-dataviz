@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { csv, autoType } from "d3";
+import { add } from 'date-fns';
 
 import UploadIcon from '../../assets/upload.svg';
 import api from '../../services/api';
 
-import { setDataFile } from "../../store/actions/dataFile";
+import { setDataFile, setForecastModel1File, setForecastModel2File, setBank  } from "../../store/actions/dataFile";
+import { setBloodBanks} from "../../store/actions/bloodBanks";
 import style from "./index.module.css";
 import UploadBankModal from "../UploadBankModal";
-import { setFinalHistoryTimeWindow, setInitialHistoryTimeWindow, setMinInitialHistoryTimeWindow, setMaxFinalHistoryTimeWindow } from "../../store/actions/filters";
+import {
+    setFinalHistoryTimeWindow,
+    setInitialHistoryTimeWindow,
+    setMinInitialHistoryTimeWindow,
+    setMaxFinalHistoryTimeWindow,
+    setMinForecastDate,
+    setMaxForecastDate,
+    setInitialForecastTimeWindow,
+    setFinalForecastTimeWindow
+   } from "../../store/actions/filters";
 
 export default function Header() {
 
   const dispatch = useDispatch();
 
-  const [bloodBanks, setBloodBanks] = useState([]);
+  const bloodBanks  = useSelector(state => state.bloodBanks);
+
   const [selectedBloodBank, setSelectedBloodBank] = useState("");
 
   const [uploadModal, setUploadModal] = useState(false);
@@ -22,15 +34,29 @@ export default function Header() {
 
   useEffect(() => {
     api.getBloodBanks().then(res => {
-      setBloodBanks(res);
-      console.log(res);
-    })
+      const uploadedBloodBank = localStorage.getItem('uploadedBloodBank');
+
+      if(uploadedBloodBank){
+        dispatch(setBloodBanks([...res, JSON.parse(uploadedBloodBank)]));
+      } else {
+        dispatch(setBloodBanks(res));
+      }
+    });
   }, []);
 
-  async function loadCsv(url){
-    let csvContent = await csv(url, autoType);
+  async function loadCsv(bank){
+    let csvContent = await csv(bank.file_url, autoType);
     dispatch(setDataFile(csvContent));
-    
+    if(bank.forecast_files.length){
+      if(bank.forecast_files[0]){
+        let model1CsvContent = await csv(bank.forecast_files[0].file_url, autoType);
+        dispatch(setForecastModel1File(model1CsvContent));
+      }
+      if(bank.forecast_files[1]){
+        let model2CsvContent = await csv(bank.forecast_files[1].file_url, autoType);
+        dispatch(setForecastModel2File(model2CsvContent));
+      }
+    }
   }
 
   function parseISODate(date){
@@ -42,11 +68,16 @@ export default function Header() {
     if(selectedBloodBank){
       const currentBank = bloodBanks.find(bank => bank._id === selectedBloodBank);
       if(currentBank?.file_url){
-        loadCsv(currentBank.file_url);
+        loadCsv(currentBank);
         dispatch(setInitialHistoryTimeWindow(parseISODate(currentBank.first_date)));
         dispatch(setFinalHistoryTimeWindow(parseISODate(currentBank.last_date)));
         dispatch(setMinInitialHistoryTimeWindow(parseISODate(currentBank.first_date)));
         dispatch(setMaxFinalHistoryTimeWindow(parseISODate(currentBank.last_date)));
+        dispatch(setMinForecastDate(parseISODate(currentBank.last_date)));
+        dispatch(setMaxForecastDate(parseISODate(add(new Date(currentBank.last_date),{months: 3}))));
+        dispatch(setInitialForecastTimeWindow(parseISODate(currentBank.last_date)));
+        dispatch(setFinalForecastTimeWindow(parseISODate(add(new Date(currentBank.last_date),{months: 3}))));
+        dispatch(setBank(currentBank));
       }
     } else {
       dispatch(setDataFile([]));

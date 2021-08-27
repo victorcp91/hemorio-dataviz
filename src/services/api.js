@@ -17,7 +17,7 @@ class Api {
   }
 
   getBloodBanks(){
-    return this.api.get('/blood_bank').then(res => {
+    return this.api.get('/blood_bank/?approved=true').then(res => {
       return res.data;
     }).catch(err => {
       console.error(err);

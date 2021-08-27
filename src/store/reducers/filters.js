@@ -2,7 +2,12 @@ const initialState = {
   initialTimeWindow: '',
   finalTimeWindow: '',
   minInitialTimeWindow: '',
-  maxFinalTimeWindow: ''
+  maxFinalTimeWindow: '',
+  forecastModel: 1,
+  forecastInitialTimeWindow: '',
+  forecastFinalTimeWindow: '',
+  minForecastDate: '',
+  maxForecastDate: ''
 }
 
 const reducer = (state = initialState, action) => {
@@ -16,9 +21,15 @@ const reducer = (state = initialState, action) => {
     case '@filters/SETMAXFINALTIMEWINDOW':
         return {...state,maxFinalTimeWindow: action.date }
     case '@filters/SETINITIALFORECASTTIMEWINDOW':
-      return {...state,initialTimeWindow: action.date }
+      return {...state,forecastInitialTimeWindow: action.date }
     case '@filters/SETFINALFORECASTTIMEWINDOW':
-      return {...state,finalTimeWindow: action.date }
+      return {...state,forecastFinalTimeWindow: action.date }
+    case '@filters/SETFORECASTMODEL':
+      return {...state, forecastModel: action.forecastModel }
+    case '@filters/SETMAXFORECASTDATE':
+      return {...state, maxForecastDate: action.date }
+    case '@filters/SETMINFORECASTDATE':
+      return {...state, minForecastDate: action.date }
     default: 
       return state;
   }

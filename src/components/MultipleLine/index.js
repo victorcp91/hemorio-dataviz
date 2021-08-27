@@ -10,7 +10,21 @@ export default function MultipleLine({type}) {
   const multipleLineChartElement = useRef(null);
   const vis = useRef(null);
 
-  const dataFile = type === 'history' ? useSelector(state => state.dataFile) : useSelector(state => state.forecastDataFile);
+  const {file, model1File, model2File} = useSelector(state => state.dataFile);
+  const {forecastModel} = useSelector(state => state.filters);
+
+  const dataFile = useMemo(() => {
+    if(file && type === 'history'){
+      return file;
+    }
+    if(model1File && forecastModel === "1"){
+      return model1File;
+    } 
+    if(model2File && forecastModel === "2"){
+      return model2File;
+    }
+    return [];
+  }, [forecastModel, type, file, model1File, model2File]);
   
   const [data, setData] = useState(null);
   const [width, setWidth] = useState(() =>{

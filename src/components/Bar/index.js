@@ -1,8 +1,8 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import BarChart from "../../charts/BarChart";
-import { map_real_name } from "../../lib/map_real_name"
-import {compareAsc, parseISO } from 'date-fns';
+import { map_real_name } from "../../lib/map_real_name";
+import {compareAsc, parseISO, format } from 'date-fns';
 
 import style from "./index.module.css";
 
@@ -10,8 +10,23 @@ let vis = null;
 
 export default function Bar({type}) {
 
-  const {initialTimeWindow, finalTimeWindow} = useSelector(state => state.filters);
-  const dataFile = type === 'history' ? useSelector(state => state.dataFile) : useSelector(state => state.forecastDataFile);
+  const { forecastModel } = useSelector(state => state.filters);
+  
+  const {file, model1File, model2File} = useSelector(state => state.dataFile);
+
+  const dataFile = useMemo(() => {
+    if(file && type === 'history'){
+      return file;
+    }
+    if(model1File && forecastModel === "1"){
+      return model1File;
+    } 
+    if(model2File && forecastModel === "2"){
+      return model2File;
+    }
+    return null;
+  }, [forecastModel, type, file, model1File, model2File]);
+
 
   const barChartElement = useRef(null);
 
@@ -27,6 +42,7 @@ export default function Bar({type}) {
   const [height, setHeight] = useState(600);
 
   function initVis() {
+    console.log('update');
     if (dataFile && dataFile.length) {
       const dataFields = ["type", "value"];
       const d3Props = {
@@ -51,18 +67,9 @@ export default function Bar({type}) {
     if(!dataFile) return null;
     let convertedDateData = dataFile.map(item => ({...item, date: get_dtInfo(item.datestr)}));
 
-    if(initialTimeWindow){
-      convertedDateData = convertedDateData.filter(item => {
-        return compareAsc(parseISO(initialTimeWindow),item.date) !== 1;
-      });
-    } 
-    if(finalTimeWindow){
-      convertedDateData = convertedDateData.filter(item => compareAsc(parseISO(finalTimeWindow), item.date) !== -1);
-    }   
     return convertedDateData;
    
-  }, [dataFile, initialTimeWindow, finalTimeWindow]);
-
+  }, [dataFile]);
 
   const barData = useMemo(() => {
     if(!filteredData) return null;
@@ -77,14 +84,15 @@ export default function Bar({type}) {
     return formattedData;
   }, [filteredData]);
 
+  console.log(forecastModel);
 
   useEffect(() => {
     if (barData) {
       initVis();
     }
-  }, [barData]);
+  }, [barData, forecastModel]);
 
-  if(!dataFile.length){
+  if(!dataFile || !dataFile.length){
     return null;
   }
 

@@ -39,3 +39,24 @@ export function setFinalForecastTimeWindow(date){
     date
   }
 }
+
+export function setForecastModel(forecastModel){
+  return {
+    type: '@filters/SETFORECASTMODEL',
+    forecastModel
+  }
+}
+
+export function setMaxForecastDate(date){
+  return {
+    type: '@filters/SETMAXFORECASTDATE',
+    date
+  }
+}
+
+export function setMinForecastDate(date){
+  return {
+    type: '@filters/SETMINFORECASTDATE',
+    date
+  }
+}

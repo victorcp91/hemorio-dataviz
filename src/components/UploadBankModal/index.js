@@ -1,24 +1,30 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import style from "./index.module.css";
+import { useDispatch, useSelector } from 'react-redux';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 import { format } from 'date-fns';
-import Select from 'react-select'
+import Select from 'react-select';
+
+import { setBloodBanks } from '../../store/actions/bloodBanks';
 
 import api from '../../services/api';
 
 export default function UploadBankModal({close}) {
 
+  const dispatch = useDispatch();
+  const bloodBanks = useSelector(state => state.bloodBanks);
+
   const [name, setName] = useState('');
   const [datesRange, setDatesRange] = useState({
-    startDate: null,
-    endDate: null,
+    startDate: new Date(),
+    endDate: new Date(),
     key: 'selection',
   });
   const [donationCampaignDatesRange, setDonationCampaignDatesRange] = useState({
-    startDate: null,
-    endDate: null,
+    startDate: new Date(),
+    endDate: new Date(),
     key: 'selection',
   });
 
@@ -64,8 +70,8 @@ export default function UploadBankModal({close}) {
     updatedDonationCampaignRanges.push({...donationCampaignDatesRange});
     setDonationCampaignRanges(updatedDonationCampaignRanges);
     setDonationCampaignDatesRange({
-      startDate: null,
-      endDate: null,
+      startDate: new Date(),
+      endDate: new Date(),
       key: 'selection',
     });
     setShowDonationCampaignDatesIntervalPicker(false);
@@ -109,16 +115,26 @@ export default function UploadBankModal({close}) {
           first_date: new Date(datesRange.startDate),
           last_date: new Date(datesRange.endDate),
           donation_campaign: donationCampaignRanges.map(dc => ({
-            first_date: format(dc.startDate, 'yyyy-MM-dd'),
-            last_date: format(dc.endDate , 'yyyy-MM-dd'),
+            first_date: new Date(dc.startDate),
+            last_date: new Date(dc.endDate),
           })),
           email_author: userEmail,
           name_author: userName,
           official_request: validationRequest,
           approved: false
         });
+        if(!validationRequest){
+          dispatch(setBloodBanks([...bloodBanks, createdBloodBank]));
+          localStorage.setItem('uploadedBloodBank', JSON.stringify(createdBloodBank));
+        } else {
+          api.getBloodBanks().then(res => {
+            dispatch(setBloodBanks(res));
+          });
+        }
+        set
+        
       }
-      
+      close();
     } catch(err) {
       console.log(err);
     }
@@ -190,8 +206,9 @@ export default function UploadBankModal({close}) {
           <input type="text" value={location} onChange={e => setLocation(e.currentTarget.value)}/>
        </div>
        <div>
-          <label className={style.csvButton} htmlFor="csvfile"l>Upload CSV file</label>
+          <label className={style.csvButton} htmlFor="csvfile"l>{csvFile ? 'Change CSV file' : 'Upload CSV file'}</label>
           <input id="csvfile" type="file" onChange={e => setCsvFile(e.currentTarget.files[0])}/>
+          <span>{csvFile?.name}</span>
        </div>
        <div className={style.checkContainer}>
         <input type="checkbox" id="validation" value={validationRequest} onChange={() => setValidationRequest(!validationRequest)}/>

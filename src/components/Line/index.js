@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
-import { csv, autoType } from "d3";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useSelector } from 'react-redux';
 import LineChart from "../../charts/LineChart";
 
@@ -9,7 +8,21 @@ export default function Line({type}) {
   const lineChartElement = useRef(null);
   const vis = useRef(null);
   
-  const dataFile = type === 'history' ? useSelector(state => state.dataFile) : useSelector(state => state.forecastDataFile);
+  const {file, model1File, model2File} = useSelector(state => state.dataFile);
+  const {forecastModel} = useSelector(state => state.filters);
+
+  const dataFile = useMemo(() => {
+    if(file && type === 'history'){
+      return file;
+    }
+    if(model1File && forecastModel === 1){
+      return model1File;
+    } 
+    if(model2File && forecastModel === 2){
+      return model2File;
+    }
+    return [];
+  }, [forecastModel, type, file, model1File, model2File]);
 
   const [data, setData] = useState(null);
   const [width, setWidth] = useState(() =>{
@@ -24,7 +37,7 @@ export default function Line({type}) {
   const [height, setHeight] = useState(600);
 
   function initVis() {
-    if (data && data.length) {
+    if (dataFile && dataFile.length) {
       const dataFields = ["date", "value"];
       const d3Props = {
         data,

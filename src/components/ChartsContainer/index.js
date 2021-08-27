@@ -1,13 +1,17 @@
 import React, {useState} from 'react';
+import { useSelector } from 'react-redux';
 
 import style from './index.module.css';
-
-import HistoryTimeWindow from '../HistoryTimeWindow';
 
 export default function ChartsContainer({children}) {
   
   const [selected, setSelected] = useState(0);
+  const { bank } = useSelector(state => state.dataFile);
 
+  if(!bank){
+    return null;
+  }
+  
   return (
     <div className={style.chartsContainer}>
       <ul className={style.tabs}>
@@ -20,7 +24,7 @@ export default function ChartsContainer({children}) {
         ))}
       </ul>
       {children.map((El,index) => 
-        <div className={`${style.chartContainer} ${index === selected ? style.show : ''}`}>
+        <div key={index} className={`${style.chartContainer} ${index === selected ? style.show : ''}`}>
           {El}
         </div>)}
     </div>
