@@ -1,6 +1,7 @@
 .container{
   margin-bottom: 50px;
   text-align: center;
+  width: 100vw;
 }
 
 .lineColor{

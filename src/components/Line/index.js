@@ -7,18 +7,23 @@ import style from "./index.module.css";
 export default function Line({type}) {
   const lineChartElement = useRef(null);
   const vis = useRef(null);
-  
+
   const {file, model1File, model2File} = useSelector(state => state.dataFile);
   const {forecastModel} = useSelector(state => state.filters);
 
   const dataFile = useMemo(() => {
     if(file && type === 'history'){
+      console.log('history');
       return file;
     }
-    if(model1File && forecastModel === 1){
+    if(model1File && forecastModel === "1"){
+      console.log('model1');
+
       return model1File;
     } 
-    if(model2File && forecastModel === 2){
+    if(model2File && forecastModel === "2"){
+      console.log('model2');
+
       return model2File;
     }
     return [];

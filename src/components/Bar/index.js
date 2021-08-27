@@ -2,11 +2,8 @@ import React, { useState, useRef, useMemo, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import BarChart from "../../charts/BarChart";
 import { map_real_name } from "../../lib/map_real_name";
-import {compareAsc, parseISO, format } from 'date-fns';
 
 import style from "./index.module.css";
-
-let vis = null;
 
 export default function Bar({type}) {
 
@@ -30,6 +27,9 @@ export default function Bar({type}) {
 
   const barChartElement = useRef(null);
 
+  const  vis = useRef(null);
+  
+
   const [width, setWidth] = useState(() =>{
     if (typeof window !== 'undefined') {
       if(window.innerWidth > 1200){
@@ -42,7 +42,6 @@ export default function Bar({type}) {
   const [height, setHeight] = useState(600);
 
   function initVis() {
-    console.log('update');
     if (dataFile && dataFile.length) {
       const dataFields = ["type", "value"];
       const d3Props = {
@@ -51,10 +50,10 @@ export default function Bar({type}) {
         width,
         height,
       };
-      if(vis){
-        vis.destroy();
+      if(vis.current){
+        vis.current.destroy();
       }
-      vis = new BarChart(barChartElement.current, d3Props);
+      vis.current = new BarChart(barChartElement.current, d3Props);
     }
   }
 
@@ -84,7 +83,6 @@ export default function Bar({type}) {
     return formattedData;
   }, [filteredData]);
 
-  console.log(forecastModel);
 
   useEffect(() => {
     if (barData) {

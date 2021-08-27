@@ -17,10 +17,10 @@ export default function BloodTypes({type}) {
     if(file && type === 'history'){
       return file;
     }
-    if(model1File && forecastModel === 1){
+    if(model1File && forecastModel === "1"){
       return model1File;
     } 
-    if(model2File && forecastModel === 2){
+    if(model2File && forecastModel === "2"){
       return model2File;
     }
     return [];

@@ -12,7 +12,6 @@ export default function HistoryTimeWindow() {
   const dispatch = useDispatch();
   const {initialTimeWindow, finalTimeWindow, minInitialTimeWindow, maxFinalTimeWindow} = useSelector(state => state.filters);
   const { file, bank } = useSelector(state => state.dataFile);
-  console.log(bank);
 
   function get_dtInfo(datestr){
     return new Date((datestr+ '').slice(0, 4),(datestr+ '').slice(4, 6)-1,(datestr+ '').slice(6, 8))
