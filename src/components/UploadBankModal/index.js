@@ -7,6 +7,8 @@ import 'react-date-range/dist/theme/default.css';
 import { format } from 'date-fns';
 import Select from 'react-select';
 
+import Loading from '../Loading';
+
 import { setBloodBanks } from '../../store/actions/bloodBanks';
 
 import api from '../../services/api';
@@ -17,11 +19,7 @@ export default function UploadBankModal({close}) {
   const bloodBanks = useSelector(state => state.bloodBanks);
 
   const [name, setName] = useState('');
-  const [datesRange, setDatesRange] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-  });
+
   const [donationCampaignDatesRange, setDonationCampaignDatesRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -30,7 +28,6 @@ export default function UploadBankModal({close}) {
 
   const [donationCampaignRanges, setDonationCampaignRanges] = useState([]);
 
-  const [showDatesIntervalPicker, setShowDatesIntervalPicker] = useState(false);
   const [showDonationCampaignDatesIntervalPicker, setShowDonationCampaignDatesIntervalPicker] = useState(false);
 
   const [countries, setCountries] = useState([]);
@@ -46,6 +43,8 @@ export default function UploadBankModal({close}) {
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     api.getCountries().then(res => {
       const formattedCountries = res.map(country => ({
@@ -56,10 +55,6 @@ export default function UploadBankModal({close}) {
     })
    
   }, [])
-
-  const handleSelect = (ranges) => {
-    setDatesRange(ranges.selection);
-  }
 
   const handleSelectDonationCampaign = (ranges) => {
     setDonationCampaignDatesRange(ranges.selection);
@@ -89,7 +84,7 @@ export default function UploadBankModal({close}) {
   }
 
   const disableSend = useMemo(() => {
-    if(!name || !country || !location || !csvFile || !datesRange.startDate || !datesRange.endDate) {
+    if(!name || !country || !location || !csvFile) {
       return true;
     }
     if(validationRequest && (!userName || !validEmail(userEmail))){
@@ -100,9 +95,10 @@ export default function UploadBankModal({close}) {
     }
 
     return false;
-  }, [userName, userEmail, validationRequest, loadData]);
+  }, [userName, userEmail, validationRequest, loadData, country, location, csvFile]);
 
   async function sendFile(){
+    setLoading(true);
     try{
       const doc = await api.sendBloodBankFile(csvFile);
       if(doc?.file_url){
@@ -112,12 +108,12 @@ export default function UploadBankModal({close}) {
           name,
           country: country.label,
           location,
-          first_date: new Date(datesRange.startDate),
-          last_date: new Date(datesRange.endDate),
           donation_campaign: donationCampaignRanges.map(dc => ({
             first_date: new Date(dc.startDate),
             last_date: new Date(dc.endDate),
           })),
+          first_date: doc.first_date,
+          last_date: doc.last_date,
           email_author: userEmail,
           name_author: userName,
           official_request: validationRequest,
@@ -131,12 +127,12 @@ export default function UploadBankModal({close}) {
             dispatch(setBloodBanks(res));
           });
         }
-        set
-        
       }
       close();
     } catch(err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   }
   
@@ -149,73 +145,56 @@ export default function UploadBankModal({close}) {
           <label>Bank name:</label>
           <input type="text" value={name} onChange={e => setName(e.currentTarget.value)}/>
         </div>
-       <div>
-          <label>Dates interval:</label>
-          <button className={style.datesButton} onClick={() => setShowDatesIntervalPicker(current => !current)}>
-            <span>{!!datesRange.startDate ? format(datesRange.startDate, 'yy/MM/dd'): 'YY/MM/DD'}</span>{' - '}
-            <span>{!!datesRange.endDate ? format(datesRange.endDate, 'yy/MM/dd'): 'YY/MM/DD'}</span>
-          </button>
-          {showDatesIntervalPicker && (
-            <div className={style.datePicker}>
-              <button className={style.close} onClick={() => setShowDatesIntervalPicker(false)}>X</button>
-              <DateRangePicker
-                ranges={[datesRange]}
-                onChange={handleSelect}
-              />
-              <button className={style.save} onClick={() => setShowDatesIntervalPicker(false)}>Save</button>
-            </div>
-          )}
-       </div>
-       <div>
-          <label>Donation Campaign intervals:</label>
-          <button className={style.datesButton} onClick={() => setShowDonationCampaignDatesIntervalPicker(current => !current)}>
-            <span>{!!donationCampaignDatesRange.startDate ? format(donationCampaignDatesRange.startDate, 'yy/MM/dd'): 'YY/MM/DD'}</span>{' - '}
-            <span>{!!donationCampaignDatesRange.endDate ? format(donationCampaignDatesRange.endDate, 'yy/MM/dd'): 'YY/MM/DD'}</span>
-          </button>
-          {donationCampaignRanges.map((range, index) => (
-            <div className={style.datesRange} key={index}>
-              <span>{format(range.startDate, 'yy/MM/dd')}</span>{' - '}<span>{format(range.endDate, 'yy/MM/dd')}</span>
-              <button onClick={() => removeDonationCampaignInterval(index)}>Remove</button>
-            </div>
-          ))}
-          {showDonationCampaignDatesIntervalPicker && (
-            <div className={style.datePicker}>
-              <button className={style.close} onClick={() => setShowDonationCampaignDatesIntervalPicker(false)}>X</button>
-              <DateRangePicker
-                ranges={[donationCampaignDatesRange]}
-                onChange={handleSelectDonationCampaign}
-              />
-              <button className={style.save} onClick={saveDonationCampaignDate}>Save</button>
-            </div>
-          )}
-          {!!donationCampaignRanges.length &&
-            <button onClick={() => setShowDonationCampaignDatesIntervalPicker(true)}>Add more</button>
-          }
-       </div>
-       <div>
-          <label>Country:</label>
-          <Select 
-            options={countries}
-            value={country}
-            onChange={setCountry}
-            placeholder="Choose blood bank country"
-          />
-       </div>
-       <div>
-          <label>Location:</label>
-          <input type="text" value={location} onChange={e => setLocation(e.currentTarget.value)}/>
-       </div>
-       <div>
-          <label className={style.csvButton} htmlFor="csvfile"l>{csvFile ? 'Change CSV file' : 'Upload CSV file'}</label>
-          <input id="csvfile" type="file" onChange={e => setCsvFile(e.currentTarget.files[0])}/>
-          <span>{csvFile?.name}</span>
-       </div>
-       <div className={style.checkContainer}>
+      <div>
+        <label>Donation Campaign intervals:</label>
+        <button className={style.datesButton} onClick={() => setShowDonationCampaignDatesIntervalPicker(current => !current)}>
+          <span>{!!donationCampaignDatesRange.startDate ? format(donationCampaignDatesRange.startDate, 'yy/MM/dd'): 'YY/MM/DD'}</span>{' - '}
+          <span>{!!donationCampaignDatesRange.endDate ? format(donationCampaignDatesRange.endDate, 'yy/MM/dd'): 'YY/MM/DD'}</span>
+        </button>
+        {donationCampaignRanges.map((range, index) => (
+          <div className={style.datesRange} key={index}>
+            <span>{format(range.startDate, 'yy/MM/dd')}</span>{' - '}<span>{format(range.endDate, 'yy/MM/dd')}</span>
+            <button onClick={() => removeDonationCampaignInterval(index)}>Remove</button>
+          </div>
+        ))}
+        {showDonationCampaignDatesIntervalPicker && (
+          <div className={style.datePicker}>
+            <button className={style.close} onClick={() => setShowDonationCampaignDatesIntervalPicker(false)}>X</button>
+            <DateRangePicker
+              ranges={[donationCampaignDatesRange]}
+              onChange={handleSelectDonationCampaign}
+            />
+            <button className={style.save} onClick={saveDonationCampaignDate}>Save</button>
+          </div>
+        )}
+        {!!donationCampaignRanges.length &&
+          <button onClick={() => setShowDonationCampaignDatesIntervalPicker(true)}>Add more</button>
+        }
+      </div>
+      <div>
+        <label>Country:</label>
+        <Select 
+          options={countries}
+          value={country}
+          onChange={setCountry}
+          placeholder="Choose blood bank country"
+        />
+      </div>
+      <div>
+        <label>Location:</label>
+        <input type="text" value={location} onChange={e => setLocation(e.currentTarget.value)}/>
+      </div>
+      <div>
+        <label className={style.csvButton} htmlFor="csvfile"l>{csvFile ? 'Change CSV file' : 'Upload CSV file'}</label>
+        <input id="csvfile" type="file" onChange={e => setCsvFile(e.currentTarget.files[0])}/>
+        <span>{csvFile?.name}</span>
+      </div>
+      <div className={style.checkContainer}>
         <input type="checkbox" id="validation" value={validationRequest} onChange={() => setValidationRequest(!validationRequest)}/>
         <label for="validation">Send data to validation</label>
-       </div>
-       {validationRequest && (
-         <>
+      </div>
+        {validationRequest && (
+        <>
           <div>
             <label>Your name:</label>
             <input type="text" value={userName} onChange={e => setUserName(e.currentTarget.value)}/>
@@ -226,16 +205,17 @@ export default function UploadBankModal({close}) {
           </div>
         </>
         
-       )}
-       <div className={style.checkContainer}>
+      )}
+      <div className={style.checkContainer}>
         <input type="checkbox" id="load" value={loadData} onChange={() => setLoadData(!loadData)}/>
         <label for="load">Load data in this section </label>
-       </div>
-       <div className={style.sendContainer}>
+      </div>
+      <div className={style.sendContainer}>
         <button onClick={sendFile} disabled={disableSend}  className={style.sendBloodBank}>Send</button>
-       </div>
-      </div>  
-    </div>
-    
+      </div>
+    </div>  
+    {loading && <Loading/>}
+  </div>
+  
   )
 }

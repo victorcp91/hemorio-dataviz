@@ -3,7 +3,7 @@ const initialState = {
   finalTimeWindow: '',
   minInitialTimeWindow: '',
   maxFinalTimeWindow: '',
-  forecastModel: 1,
+  forecastModel: '1',
   forecastInitialTimeWindow: '',
   forecastFinalTimeWindow: '',
   minForecastDate: '',

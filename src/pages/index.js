@@ -9,6 +9,8 @@ import Bar from "../components/Bar";
 import Line from "../components/Line";
 import BloodTypes from "../components/BloodTypes";
 import MultipleLines from '../components/MultipleLine';
+import ForecastMultipleLines from '../components/ForecastMultipleLine';
+
 
 import HistoryTimeWindow from "../components/HistoryTimeWindow";
 import ForecastTimeWindow from "../components/ForecastTimeWindow";
@@ -31,10 +33,7 @@ const Main = () => (
       </ChartsContainer>
       <ForecastTimeWindow/>
       <ChartsContainer >
-        <Bar name="Bar Chart" type="forecast"/>
-        <Line name="Line Chart" type="forecast"/>
-        <BloodTypes name="Blood Types" type="forecast"/>
-        <MultipleLines name="Multiple Lines" type="forecast"/>
+        <ForecastMultipleLines name="Multiple Lines" type="forecast"/>
       </ChartsContainer>
     </div>
   </Provider>
