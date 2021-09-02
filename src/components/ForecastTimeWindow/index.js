@@ -15,6 +15,7 @@ export default function HistoryTimeWindow() {
   const { bank, model1File, model2File } = useSelector(state => state.dataFile);
 
   function get_dtInfo(datestr){
+    console.log(datestr);
     return new Date((datestr+ '').slice(0, 4),(datestr+ '').slice(4, 6)-1,(datestr+ '').slice(6, 8))
   }
 
@@ -22,12 +23,12 @@ export default function HistoryTimeWindow() {
     dispatch(setInitialForecastTimeWindow(date));
     
     const filteredForecastModel1 = model1File.filter(item => {
-      return compareAsc(parseISO(date), get_dtInfo(item.date)) !== 1;
+      return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== 1;
     });
     dispatch(setForecastModel1File(filteredForecastModel1));
 
     const filteredForecastModel2 = model2File.filter(item => {
-      return compareAsc(parseISO(date), get_dtInfo(item.date)) !== 1;
+      return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== 1;
     });
     dispatch(setForecastModel2File(filteredForecastModel2));
   }
@@ -36,12 +37,12 @@ export default function HistoryTimeWindow() {
     dispatch(setFinalForecastTimeWindow(date));
 
     const filteredForecastModel1 = model1File.filter(item => {
-      return compareAsc(parseISO(date), get_dtInfo(item.date)) !== -1;
+      return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== -1;
     });
     dispatch(setForecastModel1File(filteredForecastModel1));
 
     const filteredForecastModel2 = model2File.filter(item => {
-      return compareAsc(parseISO(date), get_dtInfo(item.date)) !== -1;
+      return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== -1;
     });
     dispatch(setForecastModel2File(filteredForecastModel2));
 

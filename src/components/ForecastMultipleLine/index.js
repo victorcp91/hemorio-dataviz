@@ -69,20 +69,88 @@ export default function ForecastMultipleLine({type}) {
 
   async function fetchData() {
     if(dataFile.length){
-      const currentData = dataFile.map(({datestr, total, A_minus,A_plus,AB_minus,AB_plus,B_minus,B_plus,O_minus,O_plus}) => ({
+      console.log(dataFile);
+      const currentData = dataFile.map(({
+        datestr,
+        total,
+        A_minus,
+        A_minus_max,
+        A_minus_mean,
+        A_plus,
+        A_plus_max,
+        A_plus_mean,
+        AB_minus,
+        AB_minus_max,
+        AB_minus_mean,
+        AB_plus,
+        AB_plus_max,
+        AB_plus_mean,
+        B_minus,
+        B_minus_max,
+        B_minus_mean,
+        B_plus,
+        B_plus_max,
+        B_plus_mean,
+        O_minus,
+        O_minus_max,
+        O_minus_mean,
+        O_plus,
+        O_plus_max,
+        O_plus_mean
+      }) => ({
         date: get_dtInfo(datestr),
         value: total,
         A_minus,
+        A_minus_max,
+        A_minus_mean,
         A_plus,
+        A_plus_max,
+        A_plus_mean,
         AB_minus,
+        AB_minus_max,
+        AB_minus_mean,
         AB_plus,
+        AB_plus_max,
+        AB_plus_mean,
         B_minus,
+        B_minus_max,
+        B_minus_mean,
         B_plus,
+        B_plus_max,
+        B_plus_mean,
         O_minus,
+        O_minus_max,
+        O_minus_mean,
         O_plus,
+        O_plus_max,
+        O_plus_mean
       }));
   
-      const types = ['A_minus','A_plus','AB_minus','AB_plus','B_minus','B_plus','O_minus','O_plus'];
+      const types = [
+        'A_minus',
+        'A_minus_max',
+        'A_minus_mean',
+        'A_plus',
+        'A_plus_max',
+        'A_plus_mean',
+        'AB_minus',
+        'AB_minus_max',
+        'AB_minus_mean',
+        'AB_plus',
+        'AB_plus_max',
+        'AB_plus_mean',
+        'B_minus',
+        'B_minus_max',
+        'B_minus_mean',
+        'B_plus',
+        'B_plus_max',
+        'B_plus_mean',
+        'O_minus',
+        'O_minus_max',
+        'O_minus_mean',
+        'O_plus',
+        'O_plus_max',
+        'O_plus_mean'];
   
       const series = types.map((type) => ({
         id: type, 
@@ -140,7 +208,7 @@ export default function ForecastMultipleLine({type}) {
 
   return (
     <section id="multiline" className={style.container}>
-      <div id="vis-container" ref={multipleLineChartElement} className={`multilineChart ${activeFilters}`}></div>
+      <div id="vis-container" ref={multipleLineChartElement} className={`forecastMultilineChart ${activeFilters}`}></div>
       <div className={`filters ${style.filters}`}>
         {filters.map((filter, index) => (
           <button

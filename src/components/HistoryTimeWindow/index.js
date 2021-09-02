@@ -21,7 +21,7 @@ export default function HistoryTimeWindow() {
     dispatch(setInitialHistoryTimeWindow(date));
 
     const convertedDateData = file.filter(item => {
-      return compareAsc(parseISO(date), get_dtInfo(item.date)) !== 1;
+      return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== 1;
     });
     dispatch(setDataFile(convertedDateData));
 
@@ -31,8 +31,9 @@ export default function HistoryTimeWindow() {
     dispatch(setFinalHistoryTimeWindow(date));
 
     const convertedDateData = file.filter(item => {
-      return compareAsc(parseISO(date), get_dtInfo(item.date)) !== -1;
+      return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== -1;
     });
+
     dispatch(setDataFile(convertedDateData));
   }
 

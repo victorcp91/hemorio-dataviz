@@ -1,7 +1,7 @@
 .container{
   margin-bottom: 50px;
   text-align: center;
-  width: 100vw;
+  width: 100%;
 }
 
 .lineColor{
@@ -15,7 +15,7 @@
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 20px 40px 20px;
 }
 
 .filters button{
