@@ -11,8 +11,6 @@ export default function ChartsContainer({children}) {
   if(!bank){
     return null;
   }
-
-  console.log(children);
   
   return (
     <div className={style.chartsContainer}>

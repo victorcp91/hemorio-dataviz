@@ -27,13 +27,13 @@ const Main = () => (
       <HistoryTimeWindow/>
       <ChartsContainer>
         <Bar name="Bar Chart" type="history"/>
-        <Line name="Line Chart" type="history"/>
-        <BloodTypes name="Blood Types" type="history"/>
-        <MultipleLines name="Multiple Lines" type="history"/>
+        <Line name="Total Blood Offer" type="history"/>
+        <BloodTypes name="Pie charts" type="history"/>
+        <MultipleLines name="Line plots" type="history"/>
       </ChartsContainer>
       <ForecastTimeWindow/>
       <ChartsContainer >
-        <ForecastMultipleLines name="Multiple Lines" type="forecast"/>
+        <ForecastMultipleLines name="Line Plots" type="forecast"/>
       </ChartsContainer>
     </div>
   </Provider>

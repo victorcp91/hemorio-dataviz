@@ -4,7 +4,7 @@ import {compareAsc, parseISO } from 'date-fns';
 
 
 import {setInitialForecastTimeWindow, setFinalForecastTimeWindow, setForecastModel} from '../../store/actions/filters';
-import { setForecastModel1File, setForecastModel2File } from '../../store/actions/dataFile';
+import { setFilteredForecastModel1File, setFilteredForecastModel2File } from '../../store/actions/dataFile';
 
 import style from './index.module.css';
 
@@ -25,12 +25,12 @@ export default function HistoryTimeWindow() {
     const filteredForecastModel1 = model1File.filter(item => {
       return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== 1;
     });
-    dispatch(setForecastModel1File(filteredForecastModel1));
+    dispatch(setFilteredForecastModel1File(filteredForecastModel1));
 
     const filteredForecastModel2 = model2File.filter(item => {
       return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== 1;
     });
-    dispatch(setForecastModel2File(filteredForecastModel2));
+    dispatch(setFilteredForecastModel2File(filteredForecastModel2));
   }
 
   function setForecastFinalDate(date){
@@ -39,12 +39,12 @@ export default function HistoryTimeWindow() {
     const filteredForecastModel1 = model1File.filter(item => {
       return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== -1;
     });
-    dispatch(setForecastModel1File(filteredForecastModel1));
+    dispatch(setFilteredForecastModel1File(filteredForecastModel1));
 
     const filteredForecastModel2 = model2File.filter(item => {
       return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== -1;
     });
-    dispatch(setForecastModel2File(filteredForecastModel2));
+    dispatch(setFilteredForecastModel2File(filteredForecastModel2));
 
   }
 

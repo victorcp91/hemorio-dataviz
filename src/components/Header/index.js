@@ -6,7 +6,7 @@ import { add } from 'date-fns';
 import UploadIcon from '../../assets/upload.svg';
 import api from '../../services/api';
 
-import { setDataFile, setForecastModel1File, setForecastModel2File, setBank  } from "../../store/actions/dataFile";
+import { setDataFile,setFilteredDataFile, setForecastModel1File,setFilteredForecastModel1File, setForecastModel2File,setFilteredForecastModel2File, setBank  } from "../../store/actions/dataFile";
 import { setBloodBanks} from "../../store/actions/bloodBanks";
 import style from "./index.module.css";
 import UploadBankModal from "../UploadBankModal";
@@ -47,15 +47,17 @@ export default function Header() {
   async function loadCsv(bank){
     let csvContent = await csv(bank.file_url, autoType);
     dispatch(setDataFile(csvContent));
+    dispatch(setFilteredDataFile(csvContent));
     if(bank.forecast_files.length){
       if(bank.forecast_files[0]){
         let model1CsvContent = await csv(bank.forecast_files[0].file_url, autoType);
         dispatch(setForecastModel1File(model1CsvContent));
+        dispatch(setFilteredForecastModel1File(model1CsvContent));
       }
       if(bank.forecast_files[1]){
         let model2CsvContent = await csv(bank.forecast_files[1].file_url, autoType);
-        console.log('content', model2CsvContent);
         dispatch(setForecastModel2File(model2CsvContent));
+        dispatch(setFilteredForecastModel2File(model2CsvContent));
       }
     }
   }

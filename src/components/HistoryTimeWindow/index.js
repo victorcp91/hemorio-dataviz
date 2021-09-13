@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {compareAsc, parseISO } from 'date-fns';
 
 import {setInitialHistoryTimeWindow, setFinalHistoryTimeWindow} from '../../store/actions/filters';
-import { setDataFile } from '../../store/actions/dataFile';
+import { setFilteredDataFile } from '../../store/actions/dataFile';
 
 import style from './index.module.css';
 
@@ -23,7 +23,7 @@ export default function HistoryTimeWindow() {
     const convertedDateData = file.filter(item => {
       return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== 1;
     });
-    dispatch(setDataFile(convertedDateData));
+    dispatch(setFilteredDataFile(convertedDateData));
 
   }
 
@@ -34,7 +34,7 @@ export default function HistoryTimeWindow() {
       return compareAsc(parseISO(date), get_dtInfo(item.datestr)) !== -1;
     });
 
-    dispatch(setDataFile(convertedDateData));
+    dispatch(setFilteredDataFile(convertedDateData));
   }
 
   if(!bank){

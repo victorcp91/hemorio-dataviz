@@ -39,6 +39,7 @@ export default function Bar({type}) {
     }
     return null
   });
+  
   const [height, setHeight] = useState(600);
 
   function initVis() {

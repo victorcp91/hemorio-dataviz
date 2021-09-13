@@ -270,4 +270,5 @@ button{
   overflow: hidden;
   background-color: #fff;
   padding: 0 0 40px 0;
+  max-width: 800px;
 }
