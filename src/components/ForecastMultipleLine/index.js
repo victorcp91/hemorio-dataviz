@@ -69,7 +69,6 @@ export default function ForecastMultipleLine({type}) {
 
   async function fetchData() {
     if(dataFile.length){
-      console.log(dataFile);
       const currentData = dataFile.map(({
         datestr,
         total,

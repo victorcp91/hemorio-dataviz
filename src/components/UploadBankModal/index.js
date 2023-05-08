@@ -6,6 +6,7 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 import { format } from 'date-fns';
 import Select from 'react-select';
+import countries from '../../data/countries'
 
 import Loading from '../Loading';
 
@@ -30,7 +31,6 @@ export default function UploadBankModal({close}) {
 
   const [showDonationCampaignDatesIntervalPicker, setShowDonationCampaignDatesIntervalPicker] = useState(false);
 
-  const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState(null);
 
   const [location, setLocation] = useState('');
@@ -84,7 +84,7 @@ export default function UploadBankModal({close}) {
   }
 
   const disableSend = useMemo(() => {
-    if(!name || !country || !location || !csvFile) {
+    if(!name || !location || !csvFile) {
       return true;
     }
     if(validationRequest && (!userName || !validEmail(userEmail))){
@@ -102,11 +102,10 @@ export default function UploadBankModal({close}) {
     try{
       const doc = await api.sendBloodBankFile(csvFile);
       if(doc?.file_url){
-        
         const createdBloodBank = await api.createBloodBank({
           file_url: doc.file_url,
           name,
-          country: country.label,
+          country: country?.label || 'Brazil',
           location,
           donation_campaign: donationCampaignRanges.map(dc => ({
             first_date: new Date(dc.startDate),
