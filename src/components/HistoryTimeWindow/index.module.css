@@ -1,0 +1,35 @@
+.history{
+  margin: 20px 20px 0 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: white;
+  width: fit-content;
+  max-width: 92%;
+  color: #779CAB;
+  font-weight: bold;
+  align-self: center;
+}
+
+.timeRange{
+  display: flex;
+  align-items: center;
+}
+
+.timeRange input:first-child{
+  margin-right: 10px;
+}
+
+.timeRange input{
+  width: 100%;
+  margin-top: 5px;
+  padding: 5px 10px;
+  border: 2px solid #779CAB;
+  color:#779CAB;
+  font-weight: bold;
+}
+
+.timeRange a{
+  margin-left: 40px;
+  white-space: nowrap;
+  color: #dd7373;
+}

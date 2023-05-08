@@ -1,0 +1,235 @@
+.container{
+  display: flex;
+  align-items: center;
+  margin: 0 20px;
+}
+.container input{
+  margin: 10px 0;
+}
+
+.title{
+  color: #dd7373;
+  text-align: center;
+  width: 100%;
+}
+
+.sections{
+  padding: 0;
+  margin: 0 20px;
+  list-style: none;
+  display: flex;
+}
+
+.sections li{
+  margin-right: 20px;
+  
+}
+
+.options{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 20px;
+}
+
+.bloodBank{
+  background-color: #779CAB;
+  width: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,.1);
+  color: #fff;
+  z-index: 1;
+  max-width: 500px;
+}
+.bloodBank label{
+  display: block;
+  font-weight: bold;
+}
+
+.bloodBank select{
+  margin-bottom: 20px;
+  width: 100%;
+  padding: 5px 10px;
+  margin-top: 5px;
+  border: none;
+  color: #dd7373;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.bloodBank .uploadArea{
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.bloodBank .uploadArea{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #254e70;
+  padding: 10px;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+  color: white;
+  border: none;
+}
+
+.bloodBank .uploadArea img{
+  width: 30px;
+  margin-right: 10px;
+}
+
+.history{
+  margin-bottom: 20px;
+}
+.filtersContainer{
+  flex: 1;
+}
+
+.filters{
+  margin: 10px 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  width: fit-content;
+  background-color: #fff;
+  padding: 10px 20px 10px 60px;
+  border-radius: 8px;
+  margin-left: -20px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,.1);
+}
+
+.filters li{
+  display: flex;
+  flex-direction: column;
+  margin:0 50px 20px 0;
+}
+
+.filters select{
+  width: 100%;
+  margin-top: 5px;
+  padding: 5px 10px;
+  border:2px solid #779CAB;
+  color:#779CAB;
+  font-weight: bold;
+}
+
+.filters label{
+  display: block;
+  color: #254e70;
+  font-weight: bold;
+}
+
+.filters .datesContainer{
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.calendarContainer{
+  position: absolute;
+  max-width: 500px;
+  background-color: #fff;
+  padding: 40px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,.2);
+}
+.calendarContainer label{
+  margin: -20px 0 10px 0;
+}
+
+.close{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: #dd7373;
+  border: none;
+  background: none;
+  font-weight: bold;
+}
+
+.calendarContainer button:not(.close){
+  border: 1px solid #779CAB;
+  background: none;
+}
+
+.holidayDate{
+  background-color: #779CAB;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  margin: 0 5px;
+}
+.holidayDate button{
+  border: none;
+  color: #Fff;
+  font-weight: bold;
+  margin-left: 10px;
+  background: none;
+  font-size: 15px;
+  margin-right: -5px;
+}
+
+.filters .dates{
+  border:2px solid #779CAB;
+  color:#779CAB;
+  font-weight: bold;
+  background: none;
+  padding: 5px 10px;
+}
+
+.filters li:last-child{
+  display: inline-block;
+  margin-bottom: 5px;
+}
+
+
+/* .filters li:last-child div:first-child{
+  margin-bottom: 10px;
+} */
+
+.timeRange{
+  display: flex;
+  align-items: center;
+}
+
+.timeRange input:first-child{
+  margin-right: 10px;
+}
+
+.timeRange input{
+  width: 100%;
+  margin-top: 5px;
+  padding: 5px 10px;
+  border: 2px solid #779CAB;
+  color:#779CAB;
+  font-weight: bold;
+}
+
+.actions{
+  margin: 5px 20px;
+}
+
+.actions .outputs{
+  background-color: #dd7373;
+  font-weight: bold;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  font-size: 18px;
+  margin:0 10px 10px 0;
+}
+
+.actions .download{
+  background-color: #779CAB;
+  font-weight: bold;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  font-size: 18px;
+}

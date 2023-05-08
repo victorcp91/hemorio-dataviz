@@ -1,0 +1,150 @@
+.modalBackground{
+  background-color: rgba(0,0,0,.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top:0;
+  z-index: 2;
+}
+.modalContainer{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  max-width: 700px;
+  width: 100%;
+  max-height: 90vh;
+  background-color: lightgrey;
+  padding: 20px 50px 40px 50px;
+  border-radius: 8px;
+  overflow-y: scroll;
+  color: #254e70;
+}
+
+.modalContainer .close{
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  border: none;
+  color: #254e70;
+  font-size: 20px;
+}
+
+.modalContainer h3{
+  font-size: 20px;
+  color:#779CAB;
+}
+
+.modalContainer label{
+  display: block;
+  margin: 10px 0 5px;
+}
+
+.modalContainer input[type=text]{
+  width: 100%;
+  height: 30px;
+  box-sizing: content-box;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+}
+
+.modalContainer input[type='file'] {
+  display: none;
+}
+
+.modalContainer .csvButton{
+  background-color: #dd7373;
+  color: white;
+  width: fit-content;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.datePicker{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background-color: lightgray;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  box-shadow: 2px 2px 10px rgba(0,0,0,1);
+  border-radius: 4px;
+  padding: 45px 10px 5px 10px;
+  z-index: 2;
+}
+
+.close{
+  display: block;
+  width: fit-content;
+  border: none;
+  background: none;
+  margin: 10px 0;
+}
+.save{
+  display: block;
+  width: fit-content;
+  margin: 10px 0;
+  color: white;
+  background-color: #779CAB;
+  border: none;
+  padding: 10px 20px;
+}
+
+.datesRange{
+  padding: 5px 10px;
+  border: 2px solid #779CAB;
+  width: fit-content;
+  border-radius: 6px;
+  margin: 10px 0;
+}
+.datesRange button{
+  background-color:#dd7373;
+  color: white;
+  border: none;
+  margin: 2px 5px;
+}
+
+.datesButton{
+  border: none;
+  padding: 10px;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.checkContainer{
+  display: flex;
+  margin-top: 20px;
+}
+
+.checkContainer label{
+  margin: 4px 0 0 10px;
+}
+
+.checkContainer input[type=checkbox]{
+  width: 20px;
+  height: 20px;
+  border: none;
+}
+.sendContainer{
+  text-align: center;
+}
+
+.sendBloodBank{
+  background-color: #779CAB;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  margin-top: 30px;
+  font-size: 20px;
+}
+
+.sendBloodBank:disabled{
+  background-color: gray;
+  color: lightgray;
+  cursor: initial;
+}
