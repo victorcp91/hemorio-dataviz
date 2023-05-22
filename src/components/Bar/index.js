@@ -1,9 +1,23 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useMemo } from "react";
 import { useSelector } from 'react-redux';
-import BarChart from "../../charts/BarChart";
 import { map_real_name } from "../../lib/map_real_name";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+} from 'chart.js';
+import { Bar as BarChart } from 'react-chartjs-2';
 
 import style from "./index.module.css";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+);
 
 export default function Bar({type}) {
 
@@ -23,40 +37,6 @@ export default function Bar({type}) {
     }
     return null;
   }, [forecastModel, type, file, model1File, model2File]);
-
-
-  const barChartElement = useRef(null);
-
-  const  vis = useRef(null);
-  
-
-  const [width, setWidth] = useState(() =>{
-    if (typeof window !== 'undefined') {
-      if(window.innerWidth > 1200){
-          return 1200
-      }
-      return window.innerWidth - 20
-    }
-    return null
-  });
-  
-  const [height, setHeight] = useState(600);
-
-  function initVis() {
-    if (dataFile && dataFile.length) {
-      const dataFields = ["type", "value"];
-      const d3Props = {
-        data: barData,
-        dataFields,
-        width,
-        height,
-      };
-      if(vis.current){
-        vis.current.destroy();
-      }
-      vis.current = new BarChart(barChartElement.current, d3Props);
-    }
-  }
 
 
   function get_dtInfo(datestr){
@@ -84,20 +64,27 @@ export default function Bar({type}) {
     return formattedData;
   }, [filteredData]);
 
-
-  useEffect(() => {
-    if (barData) {
-      initVis();
-    }
-  }, [barData, forecastModel]);
-
   if(!dataFile || !dataFile.length){
     return null;
   }
 
+  const options = {
+    responsive: true,
+  }
+
+  const data = {
+    labels: barData.map(b => b.type),
+    datasets: [
+      {
+        data: barData.map(b => b.value),
+        backgroundColor: 'firebrick',
+      }
+    ]
+  }
+
   return (
     <section id="bar" className={style.container}>
-      <div id="vis-container" ref={barChartElement}></div>
+      <BarChart options={options} data={data} />
     </section>
   );
 }

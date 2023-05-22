@@ -1,13 +1,16 @@
 .chartsContainer{
   background-color: white;
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
   border-radius: 8px;
-  overflow: hidden;
-  margin: 20px;
   position: relative;
+  overflow: hidden;
 }
 
 .tabs{
   display: flex;
+  justify-content: center;
   margin: 0;
   padding: 0;
   background-color: #779CAB;
@@ -39,9 +42,7 @@
 
 .chartContainer{
   opacity: 0;
-  position: absolute;
   z-index: 0;
-  top: 55px;
 
 }
 .chartContainer.show{

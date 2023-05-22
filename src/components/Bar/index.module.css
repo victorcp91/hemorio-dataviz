@@ -1,11 +1,9 @@
 .container{
-  width: 100vw;
+  width: 100%;
+  padding: 20px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-.container rect {
-  fill: firebrick;
 }
 
 .container line{

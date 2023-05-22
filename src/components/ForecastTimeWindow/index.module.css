@@ -1,18 +1,20 @@
 .history{
-  margin: 20px 20px 0 20px;
+  margin: 50px 20px 0 20px;
   padding: 20px;
   border-radius: 8px;
   background-color: white;
-  max-width: 92%;
   width: fit-content;
   color: #779CAB;
   font-weight: bold;
   align-self: center;
+  text-align: center;
 }
 
 .timeRange{
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .timeRange input:first-child{
@@ -21,13 +23,13 @@
 
 .timeRange input{
   width: 100%;
+  max-width: 135px;
   margin-top: 5px;
   padding: 5px 10px;
   border: 2px solid #779CAB;
   color:#779CAB;
   font-weight: bold;
   height: 40px;
-  min-width: 170px
 }
 
 .timeRange select{
@@ -37,11 +39,13 @@
   color:#779CAB;
   font-weight: bold;
   height: 40px;
-  margin: 5px 0 0 30px;
+  margin: 5px 0 0 10px;
+  max-width: 100px;
+
 }
 
 .timeRange a{
-  margin-left: 40px;
+  margin: 5px 10px 0 20px;
   white-space: nowrap;
   color: #dd7373;
 }

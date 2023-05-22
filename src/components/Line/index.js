@@ -1,13 +1,30 @@
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useSelector } from 'react-redux';
-import LineChart from "../../charts/LineChart";
+import 'chartjs-adapter-date-fns';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  TimeScale
+} from 'chart.js';
+import { Line as LineChart } from 'react-chartjs-2';
 
 import style from "./index.module.css";
 
-export default function Line({type}) {
-  const lineChartElement = useRef(null);
-  const vis = useRef(null);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  TimeScale
+);
 
+
+export default function Line({type}) {
   const {filteredFile, filteredModel1File, filteredModel2File} = useSelector(state => state.dataFile);
   const {forecastModel} = useSelector(state => state.filters);
 
@@ -26,59 +43,55 @@ export default function Line({type}) {
     return [];
   }, [forecastModel, type, filteredFile, filteredModel1File, filteredModel2File]);
 
-  const [data, setData] = useState(null);
-  const [width, setWidth] = useState(() =>{
-    if (typeof window !== 'undefined') {
-        if(window.innerWidth > 1200){
-            return 1200
-        }  
-        return window.innerWidth - 20
-    }
-    return null
-  });
-  const [height, setHeight] = useState(600);
-
-  function initVis() {
-    if (dataFile && dataFile.length) {
-      const dataFields = ["date", "value"];
-      const d3Props = {
-        data,
-        dataFields,
-        width,
-        height,
-      };
-      if(vis.current){
-        vis.current.destroy();
-      }
-      vis.current = new LineChart(lineChartElement.current, d3Props);
-    }
-  }
-
     function get_dtInfo(info){
         let datestr = info.datestr
         return new Date((datestr+ '').slice(0, 4),(datestr+ '').slice(4, 6)-1,(datestr+ '').slice(6, 8))
     }
-    
-    async function fetchData() {
-        const formattedData = dataFile.map(x => ({date : get_dtInfo(x), value : x.total}))
-        setData([formattedData]);
-    }
 
-    useEffect(() => { fetchData() }, [dataFile]);
-
-    useEffect(() => {
-        if (dataFile.length && width) {
-          initVis();
+    const options = {
+      responsive: true,
+      elements: {
+        point: {
+          radius: 0
+        },
+      },
+      scales: {
+        x: {
+          type: 'time',
+          time: {
+            unit: 'month',
+          }
         }
-      }, [data, width]);
+      }
+    };
+
+    const dataSet = useMemo(() => {
+      const formattedData = dataFile.map(x => ({date : get_dtInfo(x), value : x.total}))
+      return {
+
+        labels: formattedData?.map(b => b.date),
+        datasets: [
+          {
+            data: formattedData?.map(b => b.value),
+            borderColor: 'firebrick',
+            background: 'none',
+            borderWidth: 1.5
+          }
+        ]
+      }
+    }, [dataFile])
     
     if(!dataFile || !dataFile.length){
       return  null;
     }
 
+    
+
+
     return (
         <section id="line" className={style.container}>
-            <div id="vis-container" ref={lineChartElement}></div>
+            {/* <div id="vis-container" ref={lineChartElement}></div> */}
+            <LineChart options={options} data={dataSet} />
         </section>
         )
 }

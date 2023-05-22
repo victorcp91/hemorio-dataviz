@@ -1,9 +1,10 @@
-.container{
-  margin-bottom: 50px;
-  text-align: center;
+.container {
   width: 100%;
+  padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 .lineColor{
   width: 30px;
   height: 30px;
@@ -11,11 +12,14 @@
   border: 1px solid darkgray;
 }
 .filters{
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   flex-wrap: wrap;
   width: 100%;
   justify-content: space-between;
-  padding: 0 20px 40px 20px;
+  max-width: 400px;
+  margin-top: 20px;
+  width: 100%;
 }
 
 .filters button{

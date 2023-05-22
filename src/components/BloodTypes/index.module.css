@@ -1,11 +1,11 @@
 .container{
-  width: 96vw;
+  width: 100%;
   max-width: 900px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 100px;
+  margin: 20px auto;
 }
 .container circle {
   fill: steelblue;

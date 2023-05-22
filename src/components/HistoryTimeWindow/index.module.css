@@ -1,13 +1,15 @@
 .history{
-  margin: 20px 20px 0 20px;
+  margin: 50px 20px 0 20px;
   padding: 20px;
   border-radius: 8px;
   background-color: white;
   width: fit-content;
-  max-width: 92%;
+  width: 100%;
+  max-width: 500px;
   color: #779CAB;
   font-weight: bold;
   align-self: center;
+  text-align: center;
 }
 
 .timeRange{

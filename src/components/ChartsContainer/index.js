@@ -13,7 +13,7 @@ export default function ChartsContainer({children}) {
   }
   
   return (
-    <div className={style.chartsContainer}>
+    <dv className={`${style.chartsContainer}`}>
       <ul className={style.tabs}>
         {!!children.map && children.map((c, index) => (
           <li key={index} className={index === selected ? style.selected : ''}>
@@ -23,10 +23,7 @@ export default function ChartsContainer({children}) {
           </li>
         ))}
       </ul>
-      {!!children.map ? children.map((El,index) => 
-        <div key={index} className={`${style.chartContainer} ${index === selected ? style.show : ''}`}>
-          {El}
-        </div>) : <div className={`${style.chartContainer} ${style.show}`}>{children}</div>}
-    </div>
+      {children[selected] || children}
+    </dv>
   )
 }
