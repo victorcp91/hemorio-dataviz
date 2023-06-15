@@ -31,6 +31,8 @@ export default function Header() {
   const [selectedBloodBank, setSelectedBloodBank] = useState("");
 
   const [uploadModal, setUploadModal] = useState(false);
+  
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -42,6 +44,8 @@ export default function Header() {
       } else {
         dispatch(setBloodBanks(res));
       }
+    }).finally(() => {
+      setLoading(false);
     });
   }, []);
 
@@ -102,8 +106,8 @@ export default function Header() {
           <label>
             Blood bank
           </label>
-          <select value={selectedBloodBank} onChange={changeBloodBank}>
-            <option value="">Select blood bank</option>
+          <select value={selectedBloodBank} onChange={changeBloodBank} disabled={loading}>
+            <option value="">{loading ? 'Loading data...' : 'Select blood bank'}</option>
             {bloodBanks.map((bank) => (
               <option key={bank._id} value={bank._id}>{bank.name}</option>
             ))}
